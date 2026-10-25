@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-B02FFT8TKE"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-B02FFT8TKE');
+</script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pray the rosary | Easy Rosary</title>
+  <meta name="description" content="A guided rosary. One prayer at a time, with the current bead highlighted.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231D2B4F'/%3E%3Cpath d='M14 5h4v7h6v4h-6v11h-4V16H8v-4h6z' fill='%23D8B25A'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Figtree:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="header-left">
+      <a class="back" href="index.html" aria-label="Back to home">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7"/></svg>
+      </a>
+      <a class="brand" href="index.html">Easy Rosary</a>
+    </div>
+    <nav aria-label="Main"><a href="pray.html" aria-current="page">Pray</a><a href="history.html">History</a><a href="rosaries.html">Rosaries</a></nav>
+  </header>
+
+  <main id="main" class="pray">
+    <div class="beads-pane"><div class="beads" id="beads"></div></div>
+
+    <section class="guide" aria-label="Guided rosary">
+      <div class="lang-picker" id="lang-picker" role="group" aria-label="Language of the prayers"></div>
+      <div class="set-picker" id="set-picker" role="group" aria-label="Choose the mysteries"></div>
+      <div class="progress">
+        <div class="bar" id="bar" role="progressbar" aria-label="Rosary progress" aria-valuemin="0" aria-valuemax="100"><span id="bar-fill"></span></div>
+        <p id="step-count"></p>
+      </div>
+      <article class="card" id="card" aria-live="polite"></article>
+      <div class="controls">
+        <button type="button" class="btn ghost" id="back">Back</button>
+        <button type="button" class="btn" id="next">Next</button>
+      </div>
+      <noscript><p>The guided rosary needs JavaScript.</p></noscript>
+    </section>
+  </main>
+
+  <script src="js/prayers.js"></script>
+  <script src="js/rosary-svg.js"></script>
+  <script src="js/pray.js"></script>
+</body>
+</html>
