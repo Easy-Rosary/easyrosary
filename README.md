@@ -26,7 +26,7 @@ python3 -m http.server 8000
 
 ## Deploy
 
-Any static host works (Cloudflare Pages, Netlify, GitHub Pages). Point easyrosary.com at it.
+Any static host works (Cloudflare Pages, Netlify, GitHub Pages). Point easyrosary.site at it.
 
 ## Notes
 
