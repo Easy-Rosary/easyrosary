@@ -95,14 +95,14 @@
   function cardHTML(s) {
     if (s.kind === 'done') {
       return '<p class="section">Complete</p>' +
-        '<h1 class="prayer-title">Amen.</h1>' +
+        '<h2 class="prayer-title">Amen.</h2>' +
         '<p class="note">You have finished the rosary.</p>' +
         '<button type="button" class="btn" id="again">Pray again</button>';
     }
     if (s.kind === 'mystery') {
       return '<p class="section">' + s.section + '</p>' +
         '<p class="ordinal">' + s.ordinal + ' ' + s.setName + ' Mystery</p>' +
-        '<h1 class="prayer-title">' + s.mystery.title + '</h1>' +
+        '<h2 class="prayer-title">' + s.mystery.title + '</h2>' +
         '<p class="scripture">' + s.mystery.scripture + '</p>' +
         '<p class="note">Fruit of this mystery: ' + s.mystery.fruit.toLowerCase() + '.</p>' +
         '<p class="note">Announce the mystery, take a moment to reflect, then pray the Our Father.</p>';
@@ -115,7 +115,7 @@
     var la = latin ? ' lang="la"' : '';
 
     return '<p class="section">' + s.section + '</p>' +
-      '<h1 class="prayer-title"' + la + '>' + shown.title + '</h1>' +
+      '<h2 class="prayer-title"' + la + '>' + shown.title + '</h2>' +
       (latin ? '<p class="alt">' + english.title + '</p>' : '') +
       (s.count ? '<p class="count">' + s.count + '</p>' : '') +
       (s.mystery ? '<p class="context">' + s.mystery.title + ', ' + s.mystery.scripture + '</p>' : '') +

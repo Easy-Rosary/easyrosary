@@ -1,12 +1,14 @@
 /* Easy Rosary service worker: lets the site work offline.
    Bump VERSION whenever you change site files so installed copies clean up old caches. */
-var VERSION = 'er-v2';
+var VERSION = 'er-v3';
 var SHELL = [
   './', 'home', 'pray', 'history', 'rosaries',
   'css/styles.css',
   'js/prayers.js', 'js/rosary-svg.js', 'js/home.js', 'js/pray.js', 'js/pwa.js',
   'manifest.webmanifest',
-  'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png'
+  'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png',
+  'fonts/figtree-latin-400-normal.woff2', 'fonts/figtree-latin-500-normal.woff2', 'fonts/figtree-latin-600-normal.woff2',
+  'fonts/cormorant-garamond-latin-500-normal.woff2', 'fonts/cormorant-garamond-latin-600-normal.woff2'
 ];
 
 self.addEventListener('install', function (e) {
@@ -41,8 +43,7 @@ self.addEventListener('fetch', function (e) {
 
   var url = new URL(req.url);
   var sameOrigin = url.origin === self.location.origin;
-  var fonts = url.hostname === 'fonts.googleapis.com' || url.hostname === 'fonts.gstatic.com';
-  if (!sameOrigin && !fonts) return;
+  if (!sameOrigin) return;
 
   // Pages: try the network first so updates show quickly, but give up after a few
   // seconds (weak signal) and use the saved copy.

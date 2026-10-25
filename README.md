@@ -18,7 +18,11 @@ js/pray.js        Guided mode: steps, bead highlighting, progress, keyboard, dis
 js/pwa.js         Registers the service worker and shows the install button
 sw.js             Service worker for offline use (bump VERSION when files change)
 manifest.webmanifest  Details for installing the site as an app
-icons/            App icons
+icons/            App icons and the social share image (og-image.png)
+fonts/            Self-hosted fonts (SIL Open Font License; licenses included)
+404.html          Page shown for unknown addresses (GitHub Pages uses it automatically)
+sitemap.xml       Lists the pages for search engines
+robots.txt        Points search engines at the sitemap
 ```
 
 ## Run it
@@ -41,7 +45,10 @@ Any static host works (Cloudflare Pages, Netlify, GitHub Pages). Point easyrosar
 - Prayer texts are the traditional English versions. Check them, and the scripture references, against the source you prefer.
 - Mysteries by day: Mon/Sat Joyful, Tue/Fri Sorrowful, Wed/Sun Glorious, Thu Luminous.
 - Guided mode remembers your place in the browser (localStorage).
-- Offline and install: after one visit online, the site works without a connection and can be added to the home screen (on iPhone: Share, then Add to Home Screen). Google Fonts are saved on first load; without them the site falls back to system fonts. When you change any files, bump `VERSION` in `sw.js` so installed copies refresh.
+- Offline and install: after one visit online, the site works without a connection and can be added to the home screen (on iPhone: Share, then Add to Home Screen). The fonts are self-hosted and saved too. When you change any files, bump `VERSION` in `sw.js` so installed copies refresh.
 - Display options on the guided page: text size, a words-only view that hides the beads, and a keep-screen-on switch (shown only where the browser supports it). Choices are remembered in the browser.
 - Seasonal Sundays: Sundays use the Joyful Mysteries from Advent through the Christmas season (approximated as ending on 8 January) and the Sorrowful Mysteries in Lent, otherwise Glorious. This is a long-standing custom, not a rule, and the mysteries picker always lets you choose.
 - Clean URLs: pages are linked as `/pray`, `/history` and so on. GitHub Pages and Netlify map these to the `.html` files automatically, and the old `.html` addresses still work. Each page names its clean address in a canonical tag.
+- Search engines: each page has its own title, description, canonical address, and social share tags. The home page also carries WebSite structured data. After adding a page, add it to `sitemap.xml` and update the `lastmod` dates when pages change meaningfully.
+- Fonts are Cormorant Garamond and Figtree, served from `fonts/` instead of Google, which is faster and sends no visitor data to a third party.
+- `404.html` uses addresses from the site root, so it looks right on easyrosary.site but not on a `github.io/easyrosary/` preview address.
