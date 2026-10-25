@@ -1,8 +1,8 @@
 /* Easy Rosary service worker: lets the site work offline.
    Bump VERSION whenever you change site files so installed copies clean up old caches. */
-var VERSION = 'er-v1';
+var VERSION = 'er-v2';
 var SHELL = [
-  './', 'index.html', 'pray.html', 'history.html', 'rosaries.html',
+  './', 'home', 'pray', 'history', 'rosaries',
   'css/styles.css',
   'js/prayers.js', 'js/rosary-svg.js', 'js/home.js', 'js/pray.js', 'js/pwa.js',
   'manifest.webmanifest',
@@ -12,7 +12,10 @@ var SHELL = [
 self.addEventListener('install', function (e) {
   e.waitUntil(
     caches.open(VERSION)
-      .then(function (cache) { return cache.addAll(SHELL); })
+      .then(function (cache) {
+        // Add each file on its own so one missing file cannot block the whole install.
+        return Promise.all(SHELL.map(function (url) { return cache.add(url).catch(function () {}); }));
+      })
       .then(function () { return self.skipWaiting(); })
   );
 });
@@ -52,8 +55,11 @@ self.addEventListener('fetch', function (e) {
           return res;
         })
         .catch(function () {
-          return caches.match(req, { ignoreSearch: true })
-            .then(function (hit) { return hit || caches.match('index.html'); });
+          var path = url.pathname;
+          var saved = path.endsWith('/') ? caches.match('home') : caches.match(req, { ignoreSearch: true });
+          return saved
+            .then(function (hit) { return hit || caches.match(path + '.html'); })
+            .then(function (hit) { return hit || caches.match('home'); });
         })
     );
     return;

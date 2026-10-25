@@ -5,10 +5,11 @@ A simple guide to praying the rosary. Plain HTML, CSS, and JavaScript, with no b
 ## Structure
 
 ```
-index.html        Home: hero, today's mysteries
-pray.html         Guided rosary, one prayer at a time (with a back arrow to the home page)
-history.html      A short history of the rosary
-rosaries.html     What to look for in a rosary and where to find one
+home.html         Home: hero, today's mysteries (served at /home)
+index.html        Tiny redirect from / to /home (GitHub Pages needs an index.html at the root)
+pray.html         Guided rosary, one prayer at a time, with a back arrow to home (served at /pray)
+history.html      A short history of the rosary (served at /history)
+rosaries.html     What to look for in a rosary and where to find one (served at /rosaries)
 css/styles.css    Design tokens (light and dark) and all styles
 js/prayers.js     Prayer texts, the four sets of mysteries, step sequence builder
 js/rosary-svg.js  Draws the rosary and gives each bead an id
@@ -22,11 +23,13 @@ icons/            App icons
 
 ## Run it
 
-Open `index.html` in a browser, or serve the folder:
+Links have no `.html`, so serve the folder with a server that supports that:
 
 ```
-python3 -m http.server 8000
+npx serve .
 ```
+
+Python's `http.server` does not map `/pray` to `pray.html`.
 
 ## Deploy
 
@@ -41,3 +44,4 @@ Any static host works (Cloudflare Pages, Netlify, GitHub Pages). Point easyrosar
 - Offline and install: after one visit online, the site works without a connection and can be added to the home screen (on iPhone: Share, then Add to Home Screen). Google Fonts are saved on first load; without them the site falls back to system fonts. When you change any files, bump `VERSION` in `sw.js` so installed copies refresh.
 - Display options on the guided page: text size, a words-only view that hides the beads, and a keep-screen-on switch (shown only where the browser supports it). Choices are remembered in the browser.
 - Seasonal Sundays: Sundays use the Joyful Mysteries from Advent through the Christmas season (approximated as ending on 8 January) and the Sorrowful Mysteries in Lent, otherwise Glorious. This is a long-standing custom, not a rule, and the mysteries picker always lets you choose.
+- Clean URLs: pages are linked as `/pray`, `/history` and so on. GitHub Pages and Netlify map these to the `.html` files automatically, and the old `.html` addresses still work. Each page names its clean address in a canonical tag.

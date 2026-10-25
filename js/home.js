@@ -22,6 +22,6 @@
   });
 
   var cta = document.getElementById('today-cta');
-  cta.href = 'pray.html?set=' + key;
+  cta.href = 'pray?set=' + key;
   cta.textContent = 'Pray the ' + set.name + ' Mysteries';
 })();
