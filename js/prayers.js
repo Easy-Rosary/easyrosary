@@ -109,7 +109,49 @@
   var daySets = ['glorious', 'joyful', 'sorrowful', 'glorious', 'luminous', 'sorrowful', 'joyful'];
   var ordinals = ['First', 'Second', 'Third', 'Fourth', 'Fifth'];
 
-  function todaySet() { return daySets[new Date().getDay()]; }
+  function dayNumber(y, m, d) { return Math.round(Date.UTC(y, m, d) / 86400000); }
+
+  // Gregorian Easter (Meeus/Jones/Butcher algorithm), as a day number.
+  function easterDay(y) {
+    var a = y % 19, b = Math.floor(y / 100), c = y % 100;
+    var d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25);
+    var g = Math.floor((b - f + 1) / 3);
+    var h = (19 * a + b - d - g + 15) % 30;
+    var i = Math.floor(c / 4), k = c % 4;
+    var l = (32 + 2 * e + 2 * i - h - k) % 7;
+    var m = Math.floor((a + 11 * h + 22 * l) / 451);
+    var month = Math.floor((h + l - 7 * m + 114) / 31); // 3 = March, 4 = April
+    var day = ((h + l - 7 * m + 114) % 31) + 1;
+    return dayNumber(y, month - 1, day);
+  }
+
+  /* Weekdays follow the usual pattern. Sundays are Glorious, with two long-standing customs:
+     the Joyful Mysteries from Advent through the Christmas season, and the Sorrowful Mysteries
+     in Lent. (The Christmas season is approximated as ending on 8 January.) */
+  function setInfoFor(date) {
+    var weekday = date.getDay();
+    if (weekday !== 0) return { key: daySets[weekday], note: '' };
+
+    var y = date.getFullYear();
+    var today = dayNumber(y, date.getMonth(), date.getDate());
+    var easter = easterDay(y);
+    if (today >= easter - 46 && today < easter) {
+      return { key: 'sorrowful', note: 'Sundays in Lent are traditionally prayed with the Sorrowful Mysteries.' };
+    }
+
+    var christmas = dayNumber(y, 11, 25);
+    var christmasWeekday = new Date(y, 11, 25).getDay();
+    var fourthSunday = christmas - (christmasWeekday === 0 ? 7 : christmasWeekday);
+    var adventStart = fourthSunday - 21;
+    var inChristmasSeason = date.getMonth() === 0 && date.getDate() <= 8;
+    if (today >= adventStart || inChristmasSeason) {
+      return { key: 'joyful', note: 'Sundays in Advent and the Christmas season are traditionally prayed with the Joyful Mysteries.' };
+    }
+    return { key: 'glorious', note: '' };
+  }
+
+  function todaySet(date) { return setInfoFor(date || new Date()).key; }
+  function todayNote(date) { return setInfoFor(date || new Date()).note; }
 
   /* Every set has the same shape, so the step count is always the same.
      `bead` ids match data-bead in rosary-svg.js. */
@@ -160,5 +202,5 @@
     return steps;
   }
 
-  window.ROSARY = { prayers: prayers, latin: latin, sets: sets, todaySet: todaySet, buildSteps: buildSteps };
+  window.ROSARY = { prayers: prayers, latin: latin, sets: sets, todaySet: todaySet, todayNote: todayNote, buildSteps: buildSteps };
 })();

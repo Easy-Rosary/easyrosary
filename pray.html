@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <!-- Google tag (gtag.js) -->
+    <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-B02FFT8TKE"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -19,6 +19,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Figtree:wght@400;500;600&display=swap">
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <meta name="theme-color" content="#EDF0F6" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#101830" media="(prefers-color-scheme: dark)">
+  <script src="js/pwa.js" defer></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -38,6 +43,12 @@
     <section class="guide" aria-label="Guided rosary">
       <div class="lang-picker" id="lang-picker" role="group" aria-label="Language of the prayers"></div>
       <div class="set-picker" id="set-picker" role="group" aria-label="Choose the mysteries"></div>
+      <div class="view-options" role="group" aria-label="Display options">
+        <button type="button" class="chip" id="text-smaller" aria-label="Smaller text">A−</button>
+        <button type="button" class="chip" id="text-larger" aria-label="Larger text">A+</button>
+        <button type="button" class="chip" id="words-only" aria-pressed="false">Words only</button>
+        <button type="button" class="chip" id="awake" aria-pressed="true">Keep screen on</button>
+      </div>
       <div class="progress">
         <div class="bar" id="bar" role="progressbar" aria-label="Rosary progress" aria-valuemin="0" aria-valuemax="100"><span id="bar-fill"></span></div>
         <p id="step-count"></p>

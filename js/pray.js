@@ -22,6 +22,13 @@
   var lang = store('lang') === 'la' ? 'la' : 'en';
   var showEnglish = store('en') === '1';
 
+  var SIZES = [0.85, 1, 1.2, 1.45, 1.75];
+  var sizeIdx = parseInt(store('size'), 10);
+  if (!(sizeIdx >= 0 && sizeIdx < SIZES.length)) sizeIdx = 1;
+  var wordsOnly = store('words') === '1';
+  var keepAwake = store('awake') !== '0';
+  var wakeLock = null;
+
   var idx = 0;
   var saved = parseInt(store('idx'), 10);
   if (!fromLink && saved > 0 && saved < steps.length - 1) idx = saved;
@@ -145,6 +152,8 @@
     });
 
     store('idx', String(idx));
+
+    if (last) releaseWake(); else requestWake();
   }
 
   function go(delta) {
@@ -171,7 +180,63 @@
     if (e.key === 'ArrowLeft') go(-1);
   });
 
+  function applyView() {
+    document.documentElement.style.setProperty('--text-scale', SIZES[sizeIdx]);
+    $('main').classList.toggle('words-only', wordsOnly);
+    $('words-only').setAttribute('aria-pressed', String(wordsOnly));
+    $('text-smaller').disabled = sizeIdx === 0;
+    $('text-larger').disabled = sizeIdx === SIZES.length - 1;
+    $('awake').setAttribute('aria-pressed', String(keepAwake));
+  }
+
+  // Keep the screen on while praying (where the browser supports it).
+  function requestWake() {
+    if (!('wakeLock' in navigator) || !keepAwake || wakeLock || document.visibilityState !== 'visible') return;
+    navigator.wakeLock.request('screen').then(function (lock) {
+      wakeLock = lock;
+      lock.addEventListener('release', function () { if (wakeLock === lock) wakeLock = null; });
+    }).catch(function () { /* denied or unsupported; the guide still works */ });
+  }
+
+  function releaseWake() {
+    if (!wakeLock) return;
+    var lock = wakeLock;
+    wakeLock = null;
+    lock.release().catch(function () {});
+  }
+
+  $('text-smaller').addEventListener('click', function () {
+    sizeIdx = Math.max(0, sizeIdx - 1);
+    store('size', String(sizeIdx));
+    applyView();
+  });
+  $('text-larger').addEventListener('click', function () {
+    sizeIdx = Math.min(SIZES.length - 1, sizeIdx + 1);
+    store('size', String(sizeIdx));
+    applyView();
+  });
+  $('words-only').addEventListener('click', function () {
+    wordsOnly = !wordsOnly;
+    store('words', wordsOnly ? '1' : '0');
+    applyView();
+  });
+  if ('wakeLock' in navigator) {
+    $('awake').addEventListener('click', function () {
+      keepAwake = !keepAwake;
+      store('awake', keepAwake ? '1' : '0');
+      applyView();
+      if (keepAwake) requestWake(); else releaseWake();
+    });
+    // The browser drops the lock when the tab is hidden, so ask again when it returns.
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'visible' && idx < steps.length - 1) requestWake();
+    });
+  } else {
+    $('awake').hidden = true;
+  }
+
   buildLangPicker();
   buildPicker();
+  applyView();
   render();
 })();

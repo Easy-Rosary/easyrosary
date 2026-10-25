@@ -7,7 +7,7 @@
   var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
   document.getElementById('today-sub').textContent =
-    days[new Date().getDay()] + ' is for the ' + set.name + ' Mysteries.';
+    R.todayNote() || days[new Date().getDay()] + ' is for the ' + set.name + ' Mysteries.';
 
   var list = document.getElementById('today-list');
   set.mysteries.forEach(function (mys) {
